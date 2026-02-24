@@ -1,0 +1,32 @@
+name: CI Spring Boot
+
+# Cuando se ejecuta el workflow (push y pull a devleop o main)
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+# Ejecuta el código en una máquina linux usando java 21 y temurin.
+# Se descargan dependencias, se compila el proyecto y genera el .jar
+# con -DskipTests evitamos los tests hasta tener configurado JPA y MySQL
+# Si falla el workflow no se puede mezclar el código.
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Build with Maven
+        run: mvn clean package -DskipTests
