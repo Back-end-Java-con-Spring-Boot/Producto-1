@@ -11,7 +11,8 @@ on:
       - main
       - develop
 # Ejecuta el código en una máquina linux usando java 21 y temurin.
-# Se descargan dependencias, se compila el proyecto y ejecutan tests (si hay) y genera el .jar
+# Se descargan dependencias, se compila el proyecto y genera el .jar
+# con -DskipTests evitamos los tests hasta tener configurado JPA y MySQL
 # Si falla el workflow no se puede mezclar el código.
 jobs:
   build:
@@ -28,4 +29,4 @@ jobs:
           java-version: 21
 
       - name: Build with Maven
-        run: mvn clean package
+        run: mvn clean package -DskipTests
